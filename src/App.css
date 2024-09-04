@@ -1,0 +1,156 @@
+body{
+  background-color: rgb(213, 240, 255);
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  background-image: url(/public/assets/default1.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* backdrop-filter: blur(2px); */
+}
+.navbar{
+background-color: transparent;
+
+}
+.btn{
+  background-color:  rgb(129, 189, 238);
+  box-shadow: 2px 2px 4px 4px #555151;
+  color:aliceblue;
+  transition:transform .3s ease}
+.btn:hover{
+  transform: scale(1.1);
+  background-color: rgb(125, 152, 163);
+  color:aliceblue;
+}
+.mainContainer{
+  position: relative;
+  margin-top:30px;
+  width:70%;
+  height:auto;
+  background-color:transparent;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba( 255, 255, 255, 0.25 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 4px );
+-webkit-backdrop-filter: blur( 4px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+.container{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+.btnSection{
+  margin-top: 1rem;
+  display: flex;
+bottom: 0;
+left:0;
+right: 0;
+  flex-direction:row;
+  justify-content: space-evenly;
+  list-style: none;
+}
+
+.nav-item{
+  background-color: rgb(129, 189, 238);
+  box-shadow: 2px 2px 4px 4px #555151;
+  border-radius: 10px;
+  width:10vw;
+  text-align: center;
+  margin-right: 2rem;
+  transition: transform .3s ease;
+  font-size: 1.1rem;
+}
+.nav-item:hover{
+  transform: scale(1.1);
+  background-color:  rgb(125, 152, 163);
+}
+.scrollableDiv{
+  position: relative;
+  height:400px;
+  overflow-y: scroll;
+
+}
+.nav-link{
+  color:white;
+}
+.nav-link:hover{
+  color:white;
+}
+.historyBtnSection{
+  display: flex;
+  list-style-type:none;
+}
+.l-item{
+  background-color: rgb(129, 189, 238);
+  border-radius: 10px;
+  width:10vw;
+  border: none;
+  height:3rem;
+  text-align: center;
+  margin-right: 2rem;
+  transition: transform .3s ease;
+  font-size: 1.1rem;
+  box-shadow: 2px 2px 4px 4px #555151;
+  color:white;
+  text-decoration: none;
+}
+.l-item:hover{
+  transform: scale(1.1);
+}
+.weather h2{
+  color:black;
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 4px #ffffff;
+}
+.weather p , .historyList{
+  font-size: 1.4rem;
+  color:black;
+  text-shadow: 2px 2px 4px #ffffff;
+}
+.leaflet-container {
+  border:none; 
+  border-radius: 20px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+.row{
+  width:58vw;
+}
+p{
+  margin-bottom: 0;
+}
+
+.card-body{
+  display: flex;
+  flex: row;
+  justify-content: space-between;
+}
+.card{
+  background-color:transparent;
+  border-radius: 20px;
+  display: flex;
+ 
+  background: rgba( 255, 255, 255, 0.25 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 4px );
+-webkit-backdrop-filter: blur( 4px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+@media (max-width:575px) {
+  .mainContainer{
+    width:90%;
+  }
+  .weather p , .historyList{
+    font-size: 1rem;
+  }
+  .l-item{
+    width:20vw;
+  }
+  
+}
