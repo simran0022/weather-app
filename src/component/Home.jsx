@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
@@ -7,16 +7,21 @@ import { Card, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTemperatureThreeQuarters, faDroplet, faWind, faWater } from '@fortawesome/free-solid-svg-icons';
 import { WiDaySunny, WiCloudy, WiRain, WiSnow, WiThunderstorm, WiFog } from 'react-icons/wi';
+import PerfectScrollbar from 'perfect-scrollbar';
+import 'perfect-scrollbar/css/perfect-scrollbar.css';
+import Loading from './Loading';  // Import your Loading component
 
 const Home = () => {
   const { cityName } = useParams();
   const [weatherData, setWeatherData] = useState(null);
   const [forecastData, setForecastData] = useState(null);
+  const [loading, setLoading] = useState(true); 
   const [history, setHistory] = useState(() => {
     const savedHistory = localStorage.getItem('weatherHistory');
     return savedHistory ? JSON.parse(savedHistory) : [];
   });
   const [error, setError] = useState('');
+  const forecastRef = useRef(null);
 
   const fetchWeatherForecast = async (latitude, longitude) => {
     try {
@@ -30,6 +35,7 @@ const Home = () => {
   };
 
   const fetchData = async (cityName) => {
+    setLoading(true);  
     try {
       const response = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=d9dc04eeaebe0687ed17b65e07923022`
@@ -51,6 +57,8 @@ const Home = () => {
     } catch (error) {
       setError('City not found. Please check the city name and try again.');
       console.error("Error fetching weather data:", error);
+    } finally {
+      setLoading(false); 
     }
   };
 
@@ -64,30 +72,30 @@ const Home = () => {
     const body = document.body;
     switch (main.toLowerCase()) {
       case 'clear':
-        body.style.backgroundImage = "url(/public/assets/sunny.jpg)";
+        body.style.backgroundImage = "url(/assets/sunny.jpg)";
         break;
       case 'clouds':
-        body.style.backgroundImage = "url(/public/assets/cloudy.jpeg)";
+        body.style.backgroundImage = "url(/assets/cloudy.jpeg)";
         break;
       case 'rain':
-        body.style.backgroundImage = "url(/public/assets/rainy.jpg)";
+        body.style.backgroundImage = "url(/assets/rainy.jpg)";
         break;
       case 'drizzle':
-        body.style.backgroundImage = "url(/public/assets/dizzle.jpg)";
+        body.style.backgroundImage = "url(/assets/dizzle.jpg)";
         break;
       case 'thunderstorm':
-        body.style.backgroundImage = "url(/public/assets/thunderstrom.jpg)";
+        body.style.backgroundImage = "url(/assets/thunderstrom.jpg)";
         break;
       case 'snow':
-        body.style.backgroundImage = "url(/public/assets/snowfall.jpg)";
+        body.style.backgroundImage = "url(/assets/snowfall.jpg)";
         break;
       case 'mist':
       case 'haze':
       case 'fog':
-        body.style.backgroundImage = "url(/public/assets/atmospheric.jpg)";
+        body.style.backgroundImage = "url(/assets/atmospheric.jpg)";
         break;
       default:
-        body.style.backgroundImage = "url(/public/assets/default1.jpg)";
+        body.style.backgroundImage = "url(/assets/default1.jpg)";
         break;
     }
   };
@@ -119,6 +127,17 @@ const Home = () => {
     }
   }, [weatherData]);
 
+  useEffect(() => {
+    if (forecastRef.current) {
+      const ps = new PerfectScrollbar(forecastRef.current, { wheelSpeed: 2, wheelPropagation: true, minScrollbarLength: 20 });
+      return () => ps.destroy(); 
+    }
+  }, [forecastData]);
+
+  if (loading) {
+    return <Loading />;  
+  }
+
   return (
     <>
       <div className="container">
@@ -135,7 +154,7 @@ const Home = () => {
             <>
               <div>
                 <h4 style={{ textAlign: 'left', color: 'white', textShadow: '2px 2px 4px #000000', width: '50vw' }}>Geographic Location</h4>
-                <div className="mapContainer" style={{ height: '200px', width: '95%' }}>
+                <div className="mapContainer" style={{ height: '200px', width: '100%' }}>
                   {weatherData.coord && (
                     <MapContainer center={[weatherData.coord.lat, weatherData.coord.lon]} zoom={13} style={{ height: '100%', width: '100%' }}>
                       <TileLayer
@@ -159,11 +178,11 @@ const Home = () => {
                             <Card.Text>
                               <p>{weatherData.main.temp}°C</p>
                               <p>{weatherData.weather[0].description}</p>
-                            </Card.Text></div>
+                            </Card.Text>
+                          </div>
                           <div>
                             {getWeatherIcon(weatherData.weather[0].main)}
                           </div>
-
                         </Card.Body>
                       </Card>
                     </Col>
@@ -173,9 +192,11 @@ const Home = () => {
                         <Card.Body>
                           <div>
                             <Card.Title>Feels Like</Card.Title>
-                            <Card.Text>{weatherData.main.feels_like}°C</Card.Text></div>
+                            <Card.Text>{weatherData.main.feels_like}°C</Card.Text>
+                          </div>
                           <div>
-                            <FontAwesomeIcon icon={faTemperatureThreeQuarters} size='3x' /></div>
+                            <FontAwesomeIcon icon={faTemperatureThreeQuarters} size='3x' />
+                          </div>
                         </Card.Body>
                       </Card>
                     </Col>
@@ -184,7 +205,8 @@ const Home = () => {
                         <Card.Body>
                           <div>
                             <Card.Title>Humidity</Card.Title>
-                            <Card.Text>{weatherData.main.humidity}%</Card.Text></div>
+                            <Card.Text>{weatherData.main.humidity}%</Card.Text>
+                          </div>
                           <div>
                             <FontAwesomeIcon icon={faDroplet} size="3x" />
                           </div>
@@ -196,8 +218,10 @@ const Home = () => {
                         <Card.Body>
                           <div>
                             <Card.Title>Pressure</Card.Title>
-                            <Card.Text>{weatherData.main.pressure} hPa</Card.Text></div>
-                          <div><FontAwesomeIcon icon={faWater} size="3x" />
+                            <Card.Text>{weatherData.main.pressure} hPa</Card.Text>
+                          </div>
+                          <div>
+                            <FontAwesomeIcon icon={faWater} size="3x" />
                           </div>
                         </Card.Body>
                       </Card>
@@ -207,8 +231,10 @@ const Home = () => {
                         <Card.Body>
                           <div>
                             <Card.Title>Wind Speed</Card.Title>
-                            <Card.Text>{weatherData.wind.speed} m/s</Card.Text></div>
-                          <div><FontAwesomeIcon icon={faWind} size="3x" />
+                            <Card.Text>{weatherData.wind.speed} m/s</Card.Text>
+                          </div>
+                          <div>
+                            <FontAwesomeIcon icon={faWind} size="3x" />
                           </div>
                         </Card.Body>
                       </Card>
@@ -217,22 +243,27 @@ const Home = () => {
                 </div>
               </div>
               <div className="mt-4 weather-forecast">
-                <h3 className="text-center" style={{ color: 'white', textShadow: '2px 2px 4px #000000' }}>Weather Forecast</h3>
-                <Row>
-                  {forecastData && forecastData.daily.time.slice(0, 3).map((date, index) => (
-                    <Col key={index} className='col-lg-4'>
-                      <Card className="mb-3">
-                        <Card.Body>
-                        <div>
-                            <Card.Title>{new Date(date).toDateString()}</Card.Title>
-                          <Card.Text>Max Temp: {forecastData.daily.temperature_2m_max[index]}°C</Card.Text>
-                          <Card.Text>Min Temp: {forecastData.daily.temperature_2m_min[index]}°C</Card.Text>
-                          <Card.Text>Precipitation: {forecastData.daily.precipitation_sum[index]} mm</Card.Text></div>
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  ))}
-                </Row>
+                <h3 className="text-center" style={{ color: 'white', textShadow: '2px 2px 4px #000000' }}>
+                  Weather Forecast
+                </h3>
+                <div className="forecast-scroll-container" ref={forecastRef}>
+                  <div className="forecast-row">
+                    {forecastData && forecastData.daily.time.slice(1).map((date, index) => (
+                      <div key={index} className="forecast-card">
+                        <Card className="mb-3">
+                          <Card.Body>
+                            <div>
+                              <Card.Title>{new Date(date).toDateString()}</Card.Title>
+                              <Card.Text>Max Temp: {forecastData.daily.temperature_2m_max[index]}°C</Card.Text>
+                              <Card.Text>Min Temp: {forecastData.daily.temperature_2m_min[index]}°C</Card.Text>
+                              <Card.Text>Precipitation: {forecastData.daily.precipitation_sum[index]} mm</Card.Text>
+                            </div>
+                          </Card.Body>
+                        </Card>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </>
           )}

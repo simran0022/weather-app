@@ -1,5 +1,6 @@
 body{
   background-color: rgb(213, 240, 255);
+ overflow-x: hidden;
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   background-image: url(/public/assets/default1.jpg);
   background-position: center;
@@ -7,6 +8,7 @@ body{
   background-size: cover;
   /* backdrop-filter: blur(2px); */
 }
+
 .navbar{
 background-color: transparent;
 
@@ -133,13 +135,33 @@ p{
   background-color:transparent;
   border-radius: 20px;
   display: flex;
- 
   background: rgba( 255, 255, 255, 0.25 );
 box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
 backdrop-filter: blur( 4px );
 -webkit-backdrop-filter: blur( 4px );
 border-radius: 10px;
 border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+.forecast-scroll-container {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.forecast-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.forecast-card {
+  display: inline-block;
+  margin-right: 10px; 
+}
+.ps__rail-x{
+  left:0px !important;
+}
+.weather-forecast{
+  width:58vw;
+  position: relative;
 }
 
 @media (max-width:575px) {
@@ -152,5 +174,5 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   .l-item{
     width:20vw;
   }
-  
+ 
 }

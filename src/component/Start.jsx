@@ -57,7 +57,7 @@ const Start = () => {
     <>
       <nav className="navbar navbar-expand-lg navbar-light">
         <div className="container-fluid">
-          <a className="navbar-brand" href="#" style={{ color: 'white', textShadow: '2px 2px 4px #000000' }}>Weather App</a>
+          <a className="navbar-brand" href="/" style={{ color: 'white', textShadow: '2px 2px 4px #000000' }}>Weather App</a>
           <button
             className="navbar-toggler"
             type="button"
