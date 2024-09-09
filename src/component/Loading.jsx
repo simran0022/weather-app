@@ -1,5 +1,6 @@
 import React from 'react'
 import './loadingStyle.css'
+
 const Loading = () => {
   return (
     <div>

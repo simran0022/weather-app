@@ -9,7 +9,7 @@ import { faTemperatureThreeQuarters, faDroplet, faWind, faWater } from '@fortawe
 import { WiDaySunny, WiCloudy, WiRain, WiSnow, WiThunderstorm, WiFog } from 'react-icons/wi';
 import PerfectScrollbar from 'perfect-scrollbar';
 import 'perfect-scrollbar/css/perfect-scrollbar.css';
-import Loading from './Loading';  // Import your Loading component
+import Loading from './Loading'; 
 
 const Home = () => {
   const { cityName } = useParams();
